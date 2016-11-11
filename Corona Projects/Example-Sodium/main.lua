@@ -3,6 +3,58 @@ local sqlite = require("sqlite3")
 local path, db, tableView
 local id, name, amt, sodium
 
+
+local function createtableview(event)
+	local sqlcommand
+	
+	tableView:deleteAllRows()
+	
+	id = {0}
+	name  = {""}
+	amt = {""}
+	sodium = {0}
+	
+	tableView:insertRow(
+ 		{
+ 			isCategory = false, rowHeight = 40,
+ 			rowColor = {default = {1,1,1},over = {1,0.7,0.5}},
+ 		}
+ 	)
+	if(view == 1) then
+	sqlcommand = "SELECT * FROM sodium ORDER BY name"
+	elseif(view == 2)then
+	sqlcommand = "SELECT * FROM sodium ORDER BY sodium"
+	else 
+	sqlcommand = "SELECT * FROM sodium ORDER BY sodium DESC"
+	end
+	
+	c = 0
+	for row in db:nrows(sqlcommand) do
+	c = c+1
+	table.insert(id,c)
+ 	table.insert(name,row.name)
+ 	table.insert(amt, row.amt)
+ 	table.insert(sodium, row.sodium)
+ 	tableView:insertRow(
+ 		{
+ 			isCategory = false, rowHeight = 40,
+ 			rowColor = {default = {1,1,1},over = {1,0.7,0.5}},
+ 		}
+ 	)
+ end
+	
+	end
+
+local function categorylistener(event)
+
+	if(event.phase == "began")then
+		view = view%3 + 1
+		createtableview()
+		print(view)
+		end
+
+end
+
 local function rowTouch(event)
 	local row = event.row
 	if (event.phase == "ralease") then
@@ -22,17 +74,18 @@ local function rowRender(event)
 	rowWidth = row.contentWidth
 
 	if (row.index == 1) then
-		rowTitle1 = display.newText(row, "ตารางโซเดียม(mg)",0, 0, "Quark-Bold.otf", fontSize+ 15)
+		rowTitle1 = display.newText(row, "ตารางโซเดียม(mg)",0, 0, "Arial", fontSize+ 15)
 		rowTitle1:setFillColor(0)
 		rowTitle1.x = display.contentCenterX
 		rowTitle1.y = rowHeight * 0.5
+		rowTitle1:addEventListener("touch",categorylistener)
 	return
 end
 
 rowString1 = string.format("%3d.", id[row.index])  .. " "..name[row.index] .."("..amt[row.index]..")"
 rowString2 = string.format("%3d" , sodium[row.index])
 
-rowTitle1 = display.newText(row , rowString1,0,0,"Quark-Bold.otf", fontSize)
+rowTitle1 = display.newText(row , rowString1,0,0,"Arial", fontSize)
 rowTitle1:setFillColor(0)
 rowTitle1.anchorX = 0
 rowTitle1.x = 10
@@ -45,7 +98,7 @@ myRectangle:setStrokeColor(0.5,0.5,0.5)
 myRectangle.alpha = 1
 myRectangle.anchorX = 0
 
-rowTitle2 = display.newText(row,rowString2, 0 ,0, "Quark-Bold,otf", fontSize +10)
+rowTitle2 = display.newText(row,rowString2, 0 ,0, "Arial", fontSize +10)
 rowTitle2:setFillColor(1,0.5,0)
 rowTitle2.anchorX = 1
 rowTitle2.x = rowWidth-5
@@ -85,17 +138,6 @@ tableView:insertRow(
 		rowColor = {default = {0.5,0.5,0.5,0.95}}
 	}
 )
- c = 0
- for row in db:nrows("SELECT * FROM sodium ORDER BY name;") do
- 	c = c + 1
- 	table.insert(id,c)
- 	table.insert(name,row.name)
- 	table.insert(amt, row.amt)
- 	table.insert(sodium, row.sodium)
- 	tableView:insertRow(
- 		{
- 			isCategory = false, rowHeight = 40,
- 			rowColor = {default = {1,1,1},over = {1,0.7,0.5}},
- 		}
- 	)
- end
+ 
+ view = 1
+ createtableview()
