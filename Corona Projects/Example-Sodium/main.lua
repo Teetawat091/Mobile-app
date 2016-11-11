@@ -2,10 +2,16 @@ local widget = require("widget")
 local sqlite = require("sqlite3")
 local path, db, tableView
 local id, name, amt, sodium
+local view,words
 
+local function showalertlistener(event)
+if(event.action == "clicked") then
+createtableview(words[event.index])
+end
+end
 
 local function createtableview(event)
-	local sqlcommand
+	local sqlcommand,sqlfilter,namenowb
 	
 	tableView:deleteAllRows()
 	
@@ -20,6 +26,12 @@ local function createtableview(event)
  			rowColor = {default = {1,1,1},over = {1,0.7,0.5}},
  		}
  	)
+	sqlfilter = ""
+	if not (filter == nil)then
+	sqlfilter = "WHERE name LIKE \"%"..filter.."%\""
+	end
+	
+	
 	if(view == 1) then
 	sqlcommand = "SELECT * FROM sodium ORDER BY name"
 	elseif(view == 2)then
@@ -46,7 +58,7 @@ local function createtableview(event)
 	end
 
 local function categorylistener(event)
-
+print(event.x)
 	if(event.phase == "began")then
 		view = view%3 + 1
 		createtableview()
@@ -57,12 +69,17 @@ end
 
 local function rowTouch(event)
 	local row = event.row
+	local word 
+	
 	if (event.phase == "ralease") then
-		print(row.index)
+		words = {"ยกเลิก"}
+		for word in namewb[row]:gmatch("%s+")do 
+			table.insert(words,word)
+			end
+			alert = native.showAlert("กรองการค้นหาด้วยคำ","เลือกคำ",words,showalertlistener)
 
 	end
 end
-	-- body
 
 local function rowRender(event)
 	local row, rowHeight, rowWidth, rowTitle1, rowTitle2, fontSize
@@ -104,9 +121,6 @@ rowTitle2.anchorX = 1
 rowTitle2.x = rowWidth-5
 rowTitle2.y = rowHeight *0.55
 end
-
-
-
 
 local function onSystemEvent(event)
 	if(event.type== "applicationExit") then
