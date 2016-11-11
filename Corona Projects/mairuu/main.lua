@@ -28,9 +28,9 @@ rowheigh = row.contentHeight
 rowwidth = row.contentWidth
 
 if(row.index == 1)then
-rowtitle = dispaly.newText(row,"ตารางโซเดียม(mg)",0,0,"Quark-Bold.otf",fontsize+15)
+rowtitle = display.newText(row,"ตารางโซเดียม(mg)",0,0,"Quark-Bold.otf",fontsize+15)
 rowtitle:setFillColor(0)
-rowtitle.x = dispaly.contentCenterX
+rowtitle.x = display.contentCenterX
 rowtitle.y = rowheigh * 0.5
 return
 end
@@ -38,20 +38,20 @@ end
 rowstring1 = string.format("%3d",id[row.index]).." "..name[row.index].." ("..amt[row.index]..")"
 rowstring2 = string.format("%3d",na[row.index])
 
-rowtitle = dispaly.newText(row,rowstring1,0,0,"Quark-Bold.otf",fontsize)
+rowtitle = display.newText(row,rowstring1,0,0,"Quark-Bold.otf",fontsize)
 rowtitle:setFillColor(0)
 rowtitle.anchorX = 0
 rowtitle.x = 10
 rowtitle.y = rowheigh * 0.5
 
-myrect = dispaly.newRect(row,rowwidth - 85,rowheigh * 0.47,84,39)
+myrect = display.newRect(row,rowwidth - 85,rowheigh * 0.47,84,39)
 myrect.strokeWidth = 1
 myrect:setFillColor(0.1,0.1,0.1)
 myrect:setStrokeColor(0.5,0.5,0.5)
 myrect.alpha = 1
 myrect.anchorX = 0
 
-rowtitle2 = dispaly.newText(row,rowstring2,0,0,"Quark-Bold.otf",fontsize+10)
+rowtitle2 = display.newText(row,rowstring2,0,0,"Quark-Bold.otf",fontsize+10)
 rowtitle2:setFillColor(1,0.5,0)
 rowtitle2.anchorX = 1
 rowtitle2.x = rowwidth -5
@@ -64,16 +64,16 @@ db:close()
 end
 end
 
-path = system.pathForFile("food.db",system.ResourceDirectory)
+path = system.pathForFile("Sodium.db",system.ResourceDirectory)
 db = sqlite.open(path)
 
-dispaly.setDefault("background",0.5,0.5,0.5)
-dispaly.setStatusBar(dispaly.HiddenStatusBar)
+display.setDefault("background",0.5,0.5,0.5)
+display.setStatusBar(display.HiddenStatusBar)
 
 tableview = widget.newTableView{
 left = 0, top = 0,
-height = dispaly.contentHeight,
-width = dispaly.contentWidth,
+height = display.contentHeight,
+width = display.contentWidth,
 onRowrender = rowrender,
 onRowTouch = rowtouch
 }
@@ -92,7 +92,7 @@ rowColor = {default = {0.5,0.5,0.5,0.95}}
 
 c = 0
 
-for row in db:nrows("SELECT * FROM Sodium(1);")do
+for row in db:nrows("SELECT * FROM Sodium;")do
 c = c+1
 table.insert(id,c)
 table.insert(name,row.name)
