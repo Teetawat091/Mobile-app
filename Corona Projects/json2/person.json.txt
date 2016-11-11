@@ -1,0 +1,1 @@
+﻿https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20160927T113318Z.4ce050191ed38e8e.1a27c6604e80d00f259d009eb0118a23059a1d4e&text=Hi&lang=en-th

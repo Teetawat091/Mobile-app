@@ -1,0 +1,42 @@
+local JSON = require("json")
+local params = {}
+local headers = {}
+function reqURLDownload( event )
+	local down = event.response
+	local path = string.match(down,"<source src=\"(.-)\"")
+	print(path)
+
+end
+
+local function reqSoundListener( event )
+	local resp,json , id
+	resp = event.response
+	json = JSON.decode(resp)
+	id = json["id"]
+	print(id)
+
+	network.request(
+		"http://soundoftext.com/sounds/".. id ,
+		"GET",
+		reqURLDownload,
+		{}
+
+		)
+end
+	
+
+headers["Accept-Language"] = "en-US"
+headers["Content-Type"] = "application/x-www-form-urlencoded;charset=UTF-8"
+headers["Referer"] = "http://soundoftext.com/"
+
+
+params.headers = headers
+params.body = "text=text=hello&lang=en"
+
+network.request(
+	"http://soundoftext.com/sounds",
+	"POST",
+	reqSoundListener,
+	params	
+
+	)
