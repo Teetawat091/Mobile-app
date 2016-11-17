@@ -22,11 +22,13 @@ end
 local function calculateBMI(event)
 	local h = tonumber(hTextField.text)
 	local w = tonumber(wTextField.text)
+	local each
 	if (h == nil or w == nil or h <= 0 or w <= 0) then
 		bmiText.text = "0.00"
 		return
 	end
-	bmiText.text = string.format( "%6.2f", w / (h/100 * h/100))
+	each = w/(1000*h)*30
+	bmiText.text = string.format( "%6.2f", each)
 end
 
 function scene:create(event)
