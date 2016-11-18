@@ -27,7 +27,8 @@ local function calculateBMI(event)
 		bmiText.text = "0.00"
 		return
 	end
-	each = w/(1000*h)*30
+	each = (w*1/1000)*h
+	each = (each*30)*5
 	bmiText.text = string.format( "%6.2f", each)
 end
 
@@ -47,7 +48,7 @@ function scene:show(event)
 	cy = display.contentCenterY
 	if (phase == "will") then
 		display.setDefault("background", 77 / 255, 86 / 255, 86 / 255)
-		titleText = display.newText("BMI", cx, 100, "Quark-Bold", 80)
+		titleText = display.newText("ค่าไฟ", cx, 100, "Quark-Bold", 80)
 		hTextField = native.newTextField(cx, 180, 130, 40)
 		wTextField = native.newTextField(cx, 230, 130, 40)
 		hTextField.inputType = "number"

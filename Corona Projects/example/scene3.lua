@@ -75,7 +75,7 @@ function scene:show(event)
 		)
 
 		display.setDefault("background", 77 / 255, 86 / 255, 86 / 255)
-		titleText = display.newText("BMI", display.contentCenterX, 70, "Quark-Bold", 80)
+		titleText = display.newText("การคำนวณค่าไฟ", display.contentCenterX, 70, "Quark-Bold", 50)
 		myText = display.newText(contents, 0, 0, display.contentWidth - 40, 1200, "Quark-Bold", 18)
 		myText.anchorY = 0
 		myText:setTextColor(1, 1, 1)
